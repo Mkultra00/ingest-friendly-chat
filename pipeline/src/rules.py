@@ -20,7 +20,7 @@ PLAUSIBLE: dict[str, tuple[float, float]] = {
     "fire_rating": (20, 240),          # min
     "flow": (0.2, 8.0),                # gpm, plumbing fixtures
     "capacity": (2, 500),              # gal, water heaters / tanks
-    "slope": (0.0625, 1.0),            # in/ft, sanitary/storm drainage
+    "slope": (0.0625, 0.5),            # in/ft, sanitary/storm drainage
     "voltage": (12, 600),              # V, building distribution
     "power": (0.1, 4000),              # kVA
     "current": (5, 4000),              # A
