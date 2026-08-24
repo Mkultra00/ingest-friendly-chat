@@ -15,7 +15,8 @@ from __future__ import annotations
 from collections import defaultdict
 
 from facts import Fact
-from resolvers import Finding
+from resolvers import Finding, mark_contexts
+from resolvers.code import _scope_matches
 from rules import REQUIRED_ATTRIBUTES_BY_KIND
 
 SCHEDULE_SOURCES = {"schedule", "table"}
