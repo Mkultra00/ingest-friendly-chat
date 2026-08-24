@@ -69,6 +69,13 @@ def find_missing(facts: list[Fact]) -> list[Finding]:
         )
 
     # --- B. blank required cell ------------------------------------------
+    # A blank cell is only a defect when something in the set actually demands
+    # a value for THAT item. Plenty of blanks are correct: an unrated aluminum
+    # entry door has no fire rating, a mop basin has no fixture flow. Firing on
+    # every blank costs more precision than the recall is worth.
+    contexts = mark_contexts(facts)
+    requirements = [f for f in facts if f.requirement and f.attribute]
+
     for f in facts:
         if f.requirement or f.value_raw or f.value_num is not None:
             continue
@@ -77,6 +84,10 @@ def find_missing(facts: list[Fact]) -> list[Finding]:
         required = REQUIRED_ATTRIBUTES_BY_KIND.get(f.kind or "", [])
         if f.attribute not in required:
             continue
+        governing = _governing_requirement(f, requirements, contexts)
+        if governing is None:
+            continue
+
         findings.append(
             Finding(
                 document=f.document,
