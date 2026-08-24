@@ -94,7 +94,13 @@ def list_documents(dataset_dir: str) -> list[str]:
             continue
         if name.startswith("."):
             continue
-        if name.lower() in ("manifest.json", "files.json", "readme.md"):
+        if name.lower() in (
+            "manifest.json",
+            "files.json",
+            "readme.md",
+            "output.json",
+            "debug.json",
+        ):
             continue  # answer key / metadata, never present in the real set
         names.append(name)
     return names

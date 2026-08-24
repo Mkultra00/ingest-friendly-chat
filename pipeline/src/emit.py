@@ -146,10 +146,12 @@ def dedupe(findings: list[Finding]) -> list[Finding]:
 # resolvers (a 60-min door that both violates the spec and disagrees with it);
 # emitting both guarantees one false positive under one-to-one matching, so we
 # commit to the strongest single reading.
+# A clean-factor slip is the most specific reading of a defect, then a
+# document-vs-document disagreement, then a bare code threshold.
 CATEGORY_PRIORITY = {
-    "code-violation": 3,
+    "unit-error": 3,
     "cross-document-conflict": 2,
-    "unit-error": 1,
+    "code-violation": 1,
     "missing-item": 0,
 }
 

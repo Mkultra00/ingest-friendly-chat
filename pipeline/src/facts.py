@@ -281,15 +281,23 @@ def fact_from_dict(d: dict[str, Any], document: str, page: int) -> Fact | None:
         return None
     if not f.attribute:
         return None
-    if f.value_raw is None and f.value_num is None:
+    # A blank cell is kept: missing.py needs it. A fact with neither a value
+    # nor a mark carries no information at all, so drop that.
+    if f.value_raw is None and f.value_num is None and not f.mark:
         return None
     return f.normalize()
+
+
+# Schedule cells that mean "nothing here".
+BLANK_TOKENS = {"", "-", "--", "---", "n/a", "na", "none", "tbd", "\u2014", "\u2013"}
 
 
 def _s(v: Any) -> str | None:
     if v is None:
         return None
     s = str(v).strip()
+    if s.lower() in BLANK_TOKENS:
+        return None
     return s or None
 
 
