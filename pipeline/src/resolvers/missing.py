@@ -16,7 +16,7 @@ from collections import defaultdict
 
 from facts import Fact
 from resolvers import Finding, mark_contexts
-from resolvers.code import _scope_matches
+from resolvers.code import scope_matches
 from rules import REQUIRED_ATTRIBUTES_BY_KIND
 
 SCHEDULE_SOURCES = {"schedule", "table"}
@@ -129,7 +129,7 @@ def _governing_requirement(
     for req in requirements:
         if req.attribute != f.attribute:
             continue
-        if _scope_matches(req, f, contexts):
+        if scope_matches(req, f, contexts):
             return req
     return None
 

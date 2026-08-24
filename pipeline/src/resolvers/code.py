@@ -44,7 +44,7 @@ def find_code_violations(facts: list[Fact]) -> list[Finding]:
         for f in scheduled:
             if f.attribute != req.attribute:
                 continue
-            if not _scope_matches(req, f, contexts):
+            if not scope_matches(req, f, contexts):
                 continue
             if not _violates(req, f):
                 continue
@@ -122,7 +122,7 @@ def find_code_violations(facts: list[Fact]) -> list[Finding]:
 # ---------------------------------------------------------------------------
 
 
-def _scope_matches(req: Fact, f: Fact, contexts: dict[str, str]) -> bool:
+def scope_matches(req: Fact, f: Fact, contexts: dict[str, str]) -> bool:
     """Does a document-stated requirement govern this scheduled fact?"""
     if req.mark_key and req.mark_key == f.mark_key:
         return True
