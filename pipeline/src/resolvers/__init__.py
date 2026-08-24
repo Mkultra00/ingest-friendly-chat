@@ -92,6 +92,7 @@ from resolvers.units import find_unit_errors  # noqa: E402
 __all__ = [
     "Finding",
     "context_text",
+    "mark_contexts",
     "find_conflicts",
     "find_unit_errors",
     "find_code_violations",
