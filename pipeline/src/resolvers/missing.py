@@ -98,17 +98,37 @@ def find_missing(facts: list[Fact]) -> list[Finding]:
                 container=f.container,
                 wrong_raw="blank",
                 wrong_canon="",
-                correct_raw=f"a stated {(f.attribute or '').replace('_', ' ')} value",
-                correct_canon="",
-                citation=None,
-                confidence=0.55,
+                correct_raw=governing.display()
+                or f"a stated {(f.attribute or '').replace('_', ' ')} value",
+                correct_canon=governing.canon_display(),
+                citation=governing.citation
+                or f"{governing.document} page {governing.page}",
+                confidence=0.58,
                 rule_id="blank-required-cell",
-                evidence=[x for x in (f.verbatim,) if x],
+                evidence=[x for x in (f.verbatim, governing.verbatim) if x],
+                counterpart_document=governing.document,
+                counterpart_page=governing.page,
                 note=(
                     f"{f.container or 'schedule'} row {f.mark or f.mark_key} "
-                    f"leaves {(f.attribute or '').replace('_', ' ')} blank"
+                    f"leaves {(f.attribute or '').replace('_', ' ')} blank while "
+                    f"{governing.document} p{governing.page} requires "
+                    f"{governing.display()}"
+                    + (f" for {governing.applies_to}" if governing.applies_to else "")
                 ),
             )
         )
 
     return findings
+
+
+def _governing_requirement(
+    f: Fact, requirements: list[Fact], contexts: dict[str, str]
+) -> Fact | None:
+    """The requirement that makes this blank a defect, or None."""
+    for req in requirements:
+        if req.attribute != f.attribute:
+            continue
+        if _scope_matches(req, f, contexts):
+            return req
+    return None
+
