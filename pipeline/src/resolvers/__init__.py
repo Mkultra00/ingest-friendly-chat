@@ -63,8 +63,25 @@ class Finding:
 def context_text(f: Fact) -> str:
     """Everything textual we know about a fact, for rule scope matching."""
     return " ".join(
-        x for x in (f.mark, f.kind, f.container, f.verbatim, f.applies_to) if x
+        x for x in (f.mark, f.kind, f.container, f.verbatim, f.value_raw, f.applies_to) if x
     )
+
+
+def mark_contexts(facts: list[Fact]) -> dict[str, str]:
+    """Pool every fact that shares a mark into one searchable blob.
+
+    A requirement scoped to "mechanical rooms" must reach door D-202, whose
+    fire_rating fact says only "45 min" — the word "Mechanical 101" lives on
+    the sibling `location` fact in the same schedule row.
+    """
+    from collections import defaultdict  # noqa: PLC0415
+
+    bags: dict[str, list[str]] = defaultdict(list)
+    for f in facts:
+        if f.mark_key:
+            bags[f.mark_key].append(context_text(f))
+    return {k: " ".join(v).lower() for k, v in bags.items()}
+
 
 
 from resolvers.code import find_code_violations  # noqa: E402
