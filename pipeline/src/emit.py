@@ -142,11 +142,42 @@ def dedupe(findings: list[Finding]) -> list[Finding]:
     return list(best.values())
 
 
+# One defect gets one category. A single seeded error often trips two
+# resolvers (a 60-min door that both violates the spec and disagrees with it);
+# emitting both guarantees one false positive under one-to-one matching, so we
+# commit to the strongest single reading.
+CATEGORY_PRIORITY = {
+    "code-violation": 3,
+    "cross-document-conflict": 2,
+    "unit-error": 1,
+    "missing-item": 0,
+}
+
+
+def collapse_categories(findings: list[Finding]) -> list[Finding]:
+    best: dict[tuple[str, str, str], Finding] = {}
+    for f in findings:
+        from tools_norm import norm_doc  # noqa: PLC0415
+
+        k = (norm_doc(f.document), f.mark.upper(), f.attribute)
+        cur = best.get(k)
+        if cur is None:
+            best[k] = f
+            continue
+        score = (round(f.confidence, 2), CATEGORY_PRIORITY.get(f.category, 0))
+        cur_score = (round(cur.confidence, 2), CATEGORY_PRIORITY.get(cur.category, 0))
+        if score > cur_score:
+            best[k] = f
+    return list(best.values())
+
+
 def select(findings: list[Finding]) -> list[Finding]:
     kept = [f for f in dedupe(findings) if f.category in VALID_CATEGORIES]
+    kept = collapse_categories(kept)
     kept = [f for f in kept if f.confidence >= CONFIDENCE_GATE]
     kept.sort(key=lambda f: (-f.confidence, f.document, f.page, f.mark))
     return kept[:MAX_FINDINGS]
+
 
 
 def to_output(findings: list[Finding]) -> dict[str, Any]:
