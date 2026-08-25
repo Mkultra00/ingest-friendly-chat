@@ -36,7 +36,7 @@ export type FindingDetail = {
   note: string | null;
 };
 
-export type Finding = GradedFinding & { id: string; detail?: FindingDetail };
+export type Finding = GradedFinding & { id: string; detail?: FindingDetail | undefined };
 
 export const CATEGORY_LABEL: Record<Category, string> = {
   "cross-document-conflict": "Cross-document conflict",
