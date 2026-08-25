@@ -122,10 +122,32 @@ def find_code_violations(facts: list[Fact]) -> list[Finding]:
 # ---------------------------------------------------------------------------
 
 
+#: Attributes that identify a product rather than describe a measurable
+#: property. A requirement on one mark's model number says nothing about
+#: another mark, so these only ever compare mark-to-mark.
+IDENTITY_ATTRS = {
+    "model",
+    "manufacturer",
+    "product",
+    "series",
+    "finish_code",
+    "material",
+}
+
+#: Physical dimensions are written per item on drawings ("3\" sanitary waste",
+#: "3/4\" vent"). Matching them by keyword produced pure noise, so they also
+#: require an explicit mark match or a cited clause.
+DIMENSION_ATTRS = {"size", "diameter", "length", "width", "height"}
+
+
 def scope_matches(req: Fact, f: Fact, contexts: dict[str, str]) -> bool:
     """Does a document-stated requirement govern this scheduled fact?"""
     if req.mark_key and req.mark_key == f.mark_key:
         return True
+    if req.attribute in IDENTITY_ATTRS:
+        return False  # only ever mark-to-mark
+    if req.kind and f.kind and req.kind != f.kind:
+        return False
     scope = f"{req.applies_to or ''} {req.verbatim or ''}".strip()
     words = _scope_words(scope)
     if not words:
@@ -133,7 +155,16 @@ def scope_matches(req: Fact, f: Fact, contexts: dict[str, str]) -> bool:
     # Search the whole schedule row, not just this cell: "mechanical rooms"
     # reaches door D-202 through its sibling "Mechanical 101" location cell.
     hay = (context_text(f) + " " + contexts.get(f.mark_key, "")).lower()
-    return any(w in hay for w in words)
+    hits = [w for w in words if w in hay]
+    if req.attribute in DIMENSION_ATTRS and not req.citation:
+        # Per-item dimensions are the noisiest match: demand a specific term
+        # AND a second corroborating one.
+        return len(hits) >= 2 and any(len(w) >= 6 for w in hits)
+    # One short incidental word is a coincidence; require either a strong
+    # single term or two independent ones.
+    return any(len(w) >= 6 for w in hits) or len(hits) >= 2
+
+
 
 
 def _scope_words(scope: str) -> list[str]:
