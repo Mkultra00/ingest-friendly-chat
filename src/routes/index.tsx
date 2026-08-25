@@ -1,15 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CheckCircle2, FileSearch, Layers, ShieldCheck } from "lucide-react";
+import { CheckCircle2, FileSearch, FileText, Layers, ShieldCheck } from "lucide-react";
 
 import { FindingsRegister } from "@/components/FindingsRegister";
 import { Narrator } from "@/components/Narrator";
 import {
   briefing,
-  documentNames,
   factCount,
   findings,
+  scannedDocuments,
 } from "@/lib/findings";
 import { Card } from "@/components/ui/card";
+
 
 const title = "Plumbline — construction document review with a voice readout";
 const description =
@@ -84,11 +85,41 @@ function Index() {
         </header>
 
         <dl className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <Stat value={String(documentNames.length)} label="Documents reviewed" />
+          <Stat value={String(scannedDocuments.length)} label="Documents scanned" />
           <Stat value={String(factCount)} label="Facts extracted" />
           <Stat value={String(findings.length)} label="Findings reported" />
           <Stat value="1.00" label="F1 on the practice key" />
         </dl>
+
+        <section className="mt-14 space-y-4">
+          <h2 className="text-2xl font-semibold tracking-tight">Documents scanned</h2>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {scannedDocuments.map((d) => (
+              <li key={d.name}>
+                <Card className="flex items-start gap-3 p-4">
+                  <FileText className="mt-0.5 size-5 shrink-0 text-primary" />
+                  <div className="min-w-0">
+                    <p className="truncate font-mono text-sm font-medium">{d.name}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      read as {d.kind} · {d.pages} page{d.pages > 1 ? "s" : ""} ·{" "}
+                      {d.facts} facts extracted
+                    </p>
+                    <p
+                      className={`mt-2 text-xs font-medium ${
+                        d.findings > 0 ? "text-destructive" : "text-muted-foreground"
+                      }`}
+                    >
+                      {d.findings > 0
+                        ? `${d.findings} finding${d.findings > 1 ? "s" : ""} attributed to this document`
+                        : "No findings — used as the reference side"}
+                    </p>
+                  </div>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        </section>
+
 
         <section className="mt-20 space-y-6">
           <h2 className="text-2xl font-semibold tracking-tight">How a finding is made</h2>
