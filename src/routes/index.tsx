@@ -13,6 +13,7 @@ import {
 } from "@/lib/findings";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import ConflictReview from "@/components/visual/ConflictReview";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 
@@ -239,9 +240,9 @@ function Index() {
             <section className="space-y-4">
               <h2 className="text-2xl font-semibold tracking-tight">Future visual UI</h2>
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                Placeholder for the upcoming sheet-overlay interface — drawing viewer with
-                finding markers drawn from detection bounding boxes. Drop the design here
-                when it's ready.
+                Conflict review prototype: item drawer, per-attribute source comparison,
+                sheet-location callout with the as-drawn snippet, and the product panel with a
+                compliant match. Fully interactive — flag, raise RFIs, or clear rows.
               </p>
               <a
                 href="https://claude.ai/code/artifact/2f177f1b-3d87-4d4d-af7b-f0f48bbcef13"
@@ -249,14 +250,14 @@ function Index() {
                 rel="noreferrer noopener"
                 className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
               >
-                Open the visual UI prototype
+                Open the original prototype
               </a>
-              <Card className="flex h-72 items-center justify-center border-dashed p-6 text-sm text-muted-foreground">
-                Awaiting uploaded UI
-              </Card>
-
+              <div className="overflow-x-auto rounded-2xl border border-border/60">
+                <ConflictReview />
+              </div>
             </section>
           </TabsContent>
+
         </Tabs>
 
 
