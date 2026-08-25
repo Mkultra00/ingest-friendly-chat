@@ -24,22 +24,30 @@ const CATEGORY_STYLE: Record<Category, string> = {
   "missing-item": "bg-muted text-muted-foreground border-border",
 };
 
-export function FindingsRegister() {
+export function FindingsRegister({
+  findings: scoped = allFindings,
+  documents,
+  scopeLabel,
+}: {
+  findings?: Finding[];
+  documents?: string[];
+  scopeLabel?: string;
+}) {
   const [filter, setFilter] = useState<Category | "all">("all");
   const [verdicts, setVerdicts] = useState<Record<string, Verdict | undefined>>({});
 
   const visible = useMemo(
-    () => (filter === "all" ? allFindings : allFindings.filter((f) => f.category === filter)),
-    [filter],
+    () => (filter === "all" ? scoped : scoped.filter((f) => f.category === filter)),
+    [filter, scoped],
   );
 
   const categories = useMemo(() => {
     const counts = new Map<Category, number>();
-    for (const f of allFindings) counts.set(f.category, (counts.get(f.category) ?? 0) + 1);
+    for (const f of scoped) counts.set(f.category, (counts.get(f.category) ?? 0) + 1);
     return [...counts.entries()];
-  }, []);
+  }, [scoped]);
 
-  const script = useMemo(() => briefing(visible), [visible]);
+  const script = useMemo(() => briefing(visible, documents), [visible, documents]);
 
   return (
     <section id="findings" className="space-y-6">
@@ -49,14 +57,19 @@ export function FindingsRegister() {
           <p className="mt-1 text-sm text-muted-foreground">
             Every finding is produced by deterministic code from extracted facts, so it
             cites the document, page, and value it was derived from.
+            {scopeLabel ? ` Showing ${scopeLabel}.` : ""}
           </p>
         </div>
-        <Narrator cacheKey={`briefing:${filter}:${visible.length}`} text={script} label="Read findings aloud" />
+        <Narrator
+          cacheKey={`briefing:${filter}:${(documents ?? []).join(",")}:${visible.length}`}
+          text={script}
+          label="Read findings aloud"
+        />
       </header>
 
       <div className="flex flex-wrap gap-2">
         <FilterChip active={filter === "all"} onClick={() => setFilter("all")}>
-          All {allFindings.length}
+          All {scoped.length}
         </FilterChip>
         {categories.map(([category, count]) => (
           <FilterChip
@@ -68,6 +81,7 @@ export function FindingsRegister() {
           </FilterChip>
         ))}
       </div>
+
 
       <ol className="space-y-4">
         {visible.map((f) => (

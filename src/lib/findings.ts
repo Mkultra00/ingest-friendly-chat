@@ -112,9 +112,28 @@ export const scannedDocuments: ScannedDocument[] = Array.from(
  * point of the readout is that a reviewer hears the mark, the wrong value and
  * the required value without looking at the screen.
  */
-export function briefing(items: Finding[]): string {
+export function documentKey(name: string): string {
+  return name.toLowerCase().replace(/\.[a-z0-9]+$/, "").replace(/[^a-z0-9]/g, "");
+}
+
+/** Findings attributed to any of the given document names. */
+export function findingsForDocuments(names: string[], items: Finding[] = findings): Finding[] {
+  if (names.length === 0) return [];
+  const keys = new Set(names.map(documentKey));
+  return items.filter((f) => keys.has(documentKey(f.document)));
+}
+
+export function briefing(items: Finding[], docs: string[] = scannedDocuments.map((d) => d.name)): string {
+  const scanned = scannedDocuments
+    .filter((d) => docs.some((n) => documentKey(n) === documentKey(d.name)))
+    .map((d) => `${d.name}, ${d.pages} page${d.pages > 1 ? "s" : ""}`)
+    .join("; ");
+  const intro = scanned
+    ? `Document review complete. Documents in scope: ${scanned}.`
+    : "Document review complete.";
+
   if (items.length === 0) {
-    return "No findings in the current filter. Nothing to report.";
+    return `${intro} No findings in the current selection. Nothing to report.`;
   }
   const counts = items.reduce<Record<string, number>>((acc, f) => {
     acc[f.category] = (acc[f.category] ?? 0) + 1;
@@ -124,18 +143,15 @@ export function briefing(items: Finding[]): string {
     .map(([c, n]) => `${n} ${CATEGORY_LABEL[c as Category].toLowerCase()}${n > 1 ? "s" : ""}`)
     .join(", ");
 
-  const scanned = scannedDocuments
-    .map((d) => `${d.name}, ${d.pages} page${d.pages > 1 ? "s" : ""}`)
-    .join("; ");
-
   const lines = items.map((f, i) => `Finding ${i + 1}. ${spoken(f)}`);
   return [
-    `Document review complete. Documents scanned: ${scanned}.`,
+    intro,
     `${items.length} finding${items.length > 1 ? "s" : ""}: ${breakdown}.`,
     ...lines,
     "End of review.",
   ].join(" ");
 }
+
 
 
 export function spoken(f: Finding): string {
