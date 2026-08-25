@@ -62,6 +62,7 @@ const STAGES = [
 function Index() {
   const allNames = scannedDocuments.map((d) => d.name);
   const [selected, setSelected] = useState<string[]>(allNames);
+  const [tab, setTab] = useState("review");
 
   const scopedFindings = findingsForDocuments(selected);
   const allSelected = selected.length === allNames.length;
@@ -114,10 +115,17 @@ function Index() {
             >
               Jump to findings
             </a>
+            <button
+              type="button"
+              onClick={() => setTab("future-visual-ui")}
+              className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+            >
+              Future visual UI
+            </button>
           </div>
         </header>
 
-        <Tabs defaultValue="review" className="mt-14">
+        <Tabs value={tab} onValueChange={setTab} className="mt-14">
           <TabsList>
             <TabsTrigger value="review">Document review</TabsTrigger>
             <TabsTrigger value="future-visual-ui">Future visual UI</TabsTrigger>
