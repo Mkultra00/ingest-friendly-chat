@@ -19,6 +19,7 @@ from typing import Callable
 PLAUSIBLE: dict[str, tuple[float, float]] = {
     "fire_rating": (20, 240),          # min
     "flow": (0.2, 8.0),                # gpm, plumbing fixtures
+    "flush_volume": (0.5, 3.5),        # gpf, water closets and urinals
     "capacity": (2, 500),              # gal, water heaters / tanks
     "slope": (0.0625, 0.5),            # in/ft, sanitary/storm drainage
     "voltage": (12, 600),              # V, building distribution
@@ -146,7 +147,7 @@ CODE_RULES: list[CodeRule] = [
     ),
     CodeRule(
         id="wc-1.6",
-        attribute="flow",
+        attribute="flush_volume",
         citation="IPC 604.4",
         requirement_text="1.6 gallons per flush maximum at water closets",
         limit=1.6,

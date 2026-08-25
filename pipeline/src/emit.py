@@ -35,6 +35,8 @@ VALID_CATEGORIES = {
 ATTRIBUTE_WORDS = {
     "fire_rating": "fire rating",
     "flow": "flow rate",
+    "flush_volume": "flush volume",
+    "finish_code": "finish code",
     "capacity": "capacity",
     "slope": "slope",
     "voltage": "voltage",

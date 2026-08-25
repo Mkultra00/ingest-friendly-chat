@@ -91,6 +91,8 @@ def find_code_violations(facts: list[Fact]) -> list[Finding]:
                 continue
             if f.canon_value is None or not rule.violated(f.canon_value):
                 continue
+            if f.canon_unit and rule.unit and f.canon_unit != rule.unit:
+                continue  # different dimension (gpf vs gpm): not comparable
             k = (norm_doc(f.document), f.mark_key, f.attribute or "")
             if k in seen:
                 continue
@@ -156,6 +158,12 @@ def scope_matches(req: Fact, f: Fact, contexts: dict[str, str]) -> bool:
     # reaches door D-202 through its sibling "Mechanical 101" location cell.
     hay = (context_text(f) + " " + contexts.get(f.mark_key, "")).lower()
     hits = [w for w in words if w in hay]
+    if req.attribute in DIMENSION_ATTRS and norm_doc(req.document) == norm_doc(
+        f.document
+    ):
+        # Per-item dimensions on one sheet ("3\" sanitary waste", "3/4\" vent")
+        # describe different runs, not one requirement governing the others.
+        return False
     if req.attribute in DIMENSION_ATTRS and not req.citation:
         # Per-item dimensions are the noisiest match: demand a specific term
         # AND a second corroborating one.
