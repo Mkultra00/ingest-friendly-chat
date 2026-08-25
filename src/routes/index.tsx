@@ -214,13 +214,31 @@ function Index() {
           </div>
         </section>
 
-        <div className="mt-20">
+        <div className="mt-20" id="findings">
           <FindingsRegister
             findings={scopedFindings}
             documents={selected}
             scopeLabel={scopeLabel}
           />
         </div>
+          </TabsContent>
+
+          <TabsContent value="future-visual-ui" className="mt-8">
+            <section className="space-y-4">
+              <h2 className="text-2xl font-semibold tracking-tight">Future visual UI</h2>
+              <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                Placeholder for the upcoming sheet-overlay interface — drawing viewer with
+                finding markers drawn from detection bounding boxes. Drop the design here
+                when it's ready.
+              </p>
+              <Card className="flex h-72 items-center justify-center border-dashed p-6 text-sm text-muted-foreground">
+                Awaiting uploaded UI
+              </Card>
+            </section>
+          </TabsContent>
+        </Tabs>
+
+
 
 
         <footer className="mt-20 border-t border-border pt-8 text-sm text-muted-foreground">
