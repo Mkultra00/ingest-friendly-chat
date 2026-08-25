@@ -4,6 +4,7 @@ import { CheckCircle2, FileSearch, FileText, Layers, ShieldCheck } from "lucide-
 
 import { FindingsRegister } from "@/components/FindingsRegister";
 import { Narrator } from "@/components/Narrator";
+import inspectorAvatar from "@/assets/godzilla-inspector.png";
 import {
   briefing,
   factCount,
@@ -78,15 +79,27 @@ function Index() {
     <main className="min-h-screen bg-background">
       <div className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
         <header className="max-w-3xl">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            Plumbline
-          </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-            Construction document review that shows its work — and reads it to you.
-          </h1>
+          <div className="flex items-start gap-5">
+            <img
+              src={inspectorAvatar}
+              alt="Godzilla in a construction hard hat reviewing a set of blueprints"
+              width={1024}
+              height={1024}
+              className="h-24 w-24 shrink-0 rounded-full border border-border bg-muted object-cover sm:h-28 sm:w-28"
+            />
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                Plumbline
+              </p>
+              <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
+                Construction document review that shows its work — and reads it to you.
+              </h1>
+            </div>
+          </div>
           <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
             {description}
           </p>
+
           <div className="mt-8 flex flex-wrap gap-3">
             <Narrator
               cacheKey={`briefing:${selected.join(",")}:${scopedFindings.length}`}
