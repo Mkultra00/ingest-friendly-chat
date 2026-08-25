@@ -4,6 +4,7 @@ import { CheckCircle2, FileSearch, FileText, Layers, ShieldCheck } from "lucide-
 
 import { FindingsRegister } from "@/components/FindingsRegister";
 import { Narrator } from "@/components/Narrator";
+import inspectorAvatar from "@/assets/godzilla-inspector.png";
 import {
   briefing,
   factCount,
