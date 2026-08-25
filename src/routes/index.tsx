@@ -1,15 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CheckCircle2, FileSearch, Layers, ShieldCheck } from "lucide-react";
+import { CheckCircle2, FileSearch, FileText, Layers, ShieldCheck } from "lucide-react";
 
 import { FindingsRegister } from "@/components/FindingsRegister";
 import { Narrator } from "@/components/Narrator";
 import {
   briefing,
-  documentNames,
   factCount,
   findings,
+  scannedDocuments,
 } from "@/lib/findings";
 import { Card } from "@/components/ui/card";
+
 
 const title = "Plumbline — construction document review with a voice readout";
 const description =
