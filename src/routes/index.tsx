@@ -13,6 +13,8 @@ import {
 } from "@/lib/findings";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 
 
 
@@ -115,7 +117,14 @@ function Index() {
           </div>
         </header>
 
-        <dl className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <Tabs defaultValue="review" className="mt-14">
+          <TabsList>
+            <TabsTrigger value="review">Document review</TabsTrigger>
+            <TabsTrigger value="future-visual-ui">Future visual UI</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="review" className="mt-8">
+        <dl className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <Stat
             value={`${selected.length}/${scannedDocuments.length}`}
             label="Documents in scope"
@@ -126,6 +135,7 @@ function Index() {
         </dl>
 
         <section className="mt-14 space-y-4">
+
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="text-2xl font-semibold tracking-tight">Documents scanned</h2>
@@ -213,6 +223,24 @@ function Index() {
             scopeLabel={scopeLabel}
           />
         </div>
+          </TabsContent>
+
+          <TabsContent value="future-visual-ui" className="mt-8">
+            <section className="space-y-4">
+              <h2 className="text-2xl font-semibold tracking-tight">Future visual UI</h2>
+              <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                Placeholder for the upcoming sheet-overlay interface — drawing viewer with
+                finding markers drawn from detection bounding boxes. Drop the design here
+                when it's ready.
+              </p>
+              <Card className="flex h-72 items-center justify-center border-dashed p-6 text-sm text-muted-foreground">
+                Awaiting uploaded UI
+              </Card>
+            </section>
+          </TabsContent>
+        </Tabs>
+
+
 
 
         <footer className="mt-20 border-t border-border pt-8 text-sm text-muted-foreground">
