@@ -24,24 +24,28 @@ SCHEDULE_SOURCES = {"schedule", "table"}
 REFERENCE_SOURCES = {"callout", "keynote", "note", "body"}
 
 #: Only items that belong in a schedule can be "missing from the schedule".
-#: Sheet numbers, room numbers, grid lines and detail bubbles are referenced
-#: constantly and are never scheduled, so they are not defects.
-SCHEDULEABLE_KINDS = {
-    "door",
-    "window",
-    "fixture",
-    "plumbing_fixture",
-    "equipment",
-    "finish",
-    "panel",
-    "luminaire",
-    "louver",
-    "diffuser",
-    "valve",
+#: Sheet numbers, room numbers, grid lines, circuits and detail bubbles are
+#: referenced constantly and are never scheduled, so they are not defects.
+NON_SCHEDULEABLE_KINDS = {
+    "",
+    "room",
+    "sheet",
+    "grid",
+    "detail",
+    "section",
+    "elevation",
+    "note",
+    "keynote",
+    "callout",
+    "circuit",
+    "other",
+    "pipe",
+    "assembly",
 }
 
 #: Sheet identifiers (A101, S102A, P207) — reference tokens, not schedule marks.
 SHEET_LIKE = re.compile(r"^[A-Z]{1,2}\d{3}[A-Z]?$")
+
 
 
 def find_missing(facts: list[Fact]) -> list[Finding]:
