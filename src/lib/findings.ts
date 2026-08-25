@@ -63,9 +63,49 @@ export const findings: Finding[] = graded.map((f, i) => ({
   detail: matchDetail(f),
 }));
 
-export const factCount = ((debug as { facts?: unknown[] }).facts ?? []).length;
+type RawFact = { document: string; page: number; source?: string | null };
 
+const facts = ((debug as { facts?: RawFact[] }).facts ?? []).filter((f) => f.document);
+
+export const factCount = facts.length;
+
+/** Documents flagged with at least one finding. */
 export const documentNames = Array.from(new Set(findings.map((f) => f.document)));
+
+export type ScannedDocument = {
+  name: string;
+  /** Highest page number any fact was read from. */
+  pages: number;
+  facts: number;
+  findings: number;
+  /** What the ingest treated it as: schedule, spec, drawing. */
+  kind: string;
+};
+
+/** Every document the pipeline actually read, flagged or clean. */
+export const scannedDocuments: ScannedDocument[] = Array.from(
+  new Set(facts.map((f) => f.document)),
+)
+  .map((name) => {
+    const own = facts.filter((f) => f.document === name);
+    const sources = own.map((f) => f.source).filter(Boolean) as string[];
+    const kind =
+      sources.length > 0
+        ? [...sources].sort(
+            (a, b) =>
+              sources.filter((s) => s === b).length - sources.filter((s) => s === a).length,
+          )[0]!
+        : "document";
+    return {
+      name,
+      pages: own.reduce((max, f) => Math.max(max, f.page ?? 1), 1),
+      facts: own.length,
+      findings: findings.filter((f) => f.document === name).length,
+      kind,
+    };
+  })
+  .sort((a, b) => b.findings - a.findings || a.name.localeCompare(b.name));
+
 
 /**
  * The narration script. Spoken aloud, so the numbers are said in full — the
