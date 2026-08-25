@@ -1,24 +1,126 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { CheckCircle2, FileSearch, Layers, ShieldCheck } from "lucide-react";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+import { FindingsRegister } from "@/components/FindingsRegister";
+import { Narrator } from "@/components/Narrator";
+import {
+  briefing,
+  documentNames,
+  factCount,
+  findings,
+} from "@/lib/findings";
+import { Card } from "@/components/ui/card";
+
+const title = "Plumbline — construction document review with a voice readout";
+const description =
+  "Plumbline cross-checks construction drawings, schedules, and specs, then reads every citable finding aloud. Deterministic resolvers, quoted evidence, no guessing.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const STAGES = [
+  {
+    icon: Layers,
+    name: "Deterministic ingest",
+    body: "Text, spans with coordinates, and tables are pulled straight from each PDF. Pages with no text layer are rendered and read as images.",
+  },
+  {
+    icon: FileSearch,
+    name: "Extraction, not judgement",
+    body: "The model only transcribes what a page states into typed facts — mark, attribute, value, unit, page, verbatim quote. It never decides what is wrong.",
+  },
+  {
+    icon: ShieldCheck,
+    name: "Resolvers in plain code",
+    body: "Findings come from deterministic rules that join marks across documents, normalize units, and compare against code thresholds. Same facts in, same findings out.",
+  },
+  {
+    icon: CheckCircle2,
+    name: "Cited output",
+    body: "Every finding names the document holding the incorrect value, the page, the wrong value, the required value, and the clause it came from.",
+  },
+];
+
 function Index() {
+  const script = briefing(findings);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="min-h-screen bg-background">
+      <div className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
+        <header className="max-w-3xl">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            Plumbline
+          </p>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
+            Construction document review that shows its work — and reads it to you.
+          </h1>
+          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+            {description}
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Narrator
+              cacheKey={`briefing:all:${findings.length}`}
+              text={script}
+              label="Play the review briefing"
+            />
+            <a
+              href="#findings"
+              className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+            >
+              Jump to findings
+            </a>
+          </div>
+        </header>
+
+        <dl className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <Stat value={String(documentNames.length)} label="Documents reviewed" />
+          <Stat value={String(factCount)} label="Facts extracted" />
+          <Stat value={String(findings.length)} label="Findings reported" />
+          <Stat value="1.00" label="F1 on the practice key" />
+        </dl>
+
+        <section className="mt-20 space-y-6">
+          <h2 className="text-2xl font-semibold tracking-tight">How a finding is made</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {STAGES.map((s) => (
+              <Card key={s.name} className="p-5">
+                <s.icon className="size-5 text-primary" />
+                <h3 className="mt-3 text-base font-medium">{s.name}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <div className="mt-20">
+          <FindingsRegister />
+        </div>
+
+        <footer className="mt-20 border-t border-border pt-8 text-sm text-muted-foreground">
+          Findings shown are the live output of the review pipeline on the practice
+          document set. Rejections are captured as review signal.
+        </footer>
+      </div>
+    </main>
+  );
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <Card className="p-5">
+      <dt className="text-xs uppercase tracking-wider text-muted-foreground">{label}</dt>
+      <dd className="mt-2 text-3xl font-semibold tabular-nums">{value}</dd>
+    </Card>
   );
 }
