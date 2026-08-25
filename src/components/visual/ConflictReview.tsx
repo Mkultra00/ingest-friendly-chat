@@ -48,7 +48,7 @@ export default function ConflictReview({
       (r) => isFlagged(r) && r.sev === "trivial" && statusOf(keyOf(i.mark, r.attr)) === "open",
     ).length;
   const worstOpen = (i: Item) => {
-    let w: Row["sev"] | null = null;
+    let w: NonNullable<Row["sev"]> | null = null;
     i.rows.forEach((r) => {
       if (!isEscalatable(r) || statusOf(keyOf(i.mark, r.attr)) !== "open") return;
       if (!w || SEV[r.sev!].rank > SEV[w].rank) w = r.sev!;
@@ -56,7 +56,7 @@ export default function ConflictReview({
     return w;
   };
 
-  const sel = useMemo(() => ITEMS.find((i) => i.mark === selMark) ?? ITEMS[0], [selMark]);
+  const sel = useMemo(() => (ITEMS.find((i) => i.mark === selMark) ?? ITEMS[0])!, [selMark]);
 
   const select = (mark: string) => {
     const item = ITEMS.find((i) => i.mark === mark)!;
