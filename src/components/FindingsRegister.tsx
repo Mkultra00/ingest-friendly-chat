@@ -26,7 +26,7 @@ const CATEGORY_STYLE: Record<Category, string> = {
 
 export function FindingsRegister() {
   const [filter, setFilter] = useState<Category | "all">("all");
-  const [verdicts, setVerdicts] = useState<Record<string, Verdict>>({});
+  const [verdicts, setVerdicts] = useState<Record<string, Verdict | undefined>>({});
 
   const visible = useMemo(
     () => (filter === "all" ? allFindings : allFindings.filter((f) => f.category === filter)),
@@ -76,7 +76,7 @@ export function FindingsRegister() {
               finding={f}
               verdict={verdicts[f.id]}
               onVerdict={(v) =>
-                setVerdicts((prev) => ({ ...prev, [f.id]: prev[f.id] === v ? undefined! : v }))
+                setVerdicts((prev) => ({ ...prev, [f.id]: prev[f.id] === v ? undefined : v }))
               }
             />
           </li>
@@ -122,7 +122,7 @@ function FindingCard({
   onVerdict,
 }: {
   finding: Finding;
-  verdict?: Verdict;
+  verdict?: Verdict | undefined;
   onVerdict: (v: Verdict) => void;
 }) {
   const d = finding.detail;
