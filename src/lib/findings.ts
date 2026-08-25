@@ -124,13 +124,19 @@ export function briefing(items: Finding[]): string {
     .map(([c, n]) => `${n} ${CATEGORY_LABEL[c as Category].toLowerCase()}${n > 1 ? "s" : ""}`)
     .join(", ");
 
+  const scanned = scannedDocuments
+    .map((d) => `${d.name}, ${d.pages} page${d.pages > 1 ? "s" : ""}`)
+    .join("; ");
+
   const lines = items.map((f, i) => `Finding ${i + 1}. ${spoken(f)}`);
   return [
-    `Document review complete. ${items.length} finding${items.length > 1 ? "s" : ""}: ${breakdown}.`,
+    `Document review complete. Documents scanned: ${scanned}.`,
+    `${items.length} finding${items.length > 1 ? "s" : ""}: ${breakdown}.`,
     ...lines,
     "End of review.",
   ].join(" ");
 }
+
 
 export function spoken(f: Finding): string {
   const d = f.detail;
