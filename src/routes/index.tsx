@@ -115,7 +115,14 @@ function Index() {
           </div>
         </header>
 
-        <dl className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <Tabs defaultValue="review" className="mt-14">
+          <TabsList>
+            <TabsTrigger value="review">Document review</TabsTrigger>
+            <TabsTrigger value="future-visual-ui">Future visual UI</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="review" className="mt-8">
+        <dl className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <Stat
             value={`${selected.length}/${scannedDocuments.length}`}
             label="Documents in scope"
@@ -126,6 +133,7 @@ function Index() {
         </dl>
 
         <section className="mt-14 space-y-4">
+
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="text-2xl font-semibold tracking-tight">Documents scanned</h2>
