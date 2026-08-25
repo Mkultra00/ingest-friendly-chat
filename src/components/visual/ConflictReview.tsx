@@ -47,7 +47,7 @@ export default function ConflictReview({
     i.rows.filter(
       (r) => isFlagged(r) && r.sev === "trivial" && statusOf(keyOf(i.mark, r.attr)) === "open",
     ).length;
-  const worstOpen = (i: Item) => {
+  const worstOpen = (i: Item): NonNullable<Row["sev"]> | null => {
     let w: NonNullable<Row["sev"]> | null = null;
     i.rows.forEach((r) => {
       if (!isEscalatable(r) || statusOf(keyOf(i.mark, r.attr)) !== "open") return;
