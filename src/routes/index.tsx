@@ -115,13 +115,15 @@ function Index() {
             >
               Jump to findings
             </a>
-            <button
-              type="button"
-              onClick={() => setTab("future-visual-ui")}
+            <a
+              href="https://claude.ai/code/artifact/2f177f1b-3d87-4d4d-af7b-f0f48bbcef13"
+              target="_blank"
+              rel="noreferrer noopener"
               className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
             >
               Future visual UI
-            </button>
+            </a>
+
           </div>
         </header>
 
