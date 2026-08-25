@@ -35,6 +35,8 @@ VALID_CATEGORIES = {
 ATTRIBUTE_WORDS = {
     "fire_rating": "fire rating",
     "flow": "flow rate",
+    "flush_volume": "flush volume",
+    "finish_code": "finish code",
     "capacity": "capacity",
     "slope": "slope",
     "voltage": "voltage",
@@ -93,6 +95,18 @@ def description_of(f: Finding) -> str:
             f"{mark} in {where} on page {page} is given a {word} of {wrong}, "
             f"but {f.citation or 'the governing requirement'} requires "
             f"{right}."
+        )
+    elif f.attribute == "finish_code":
+        s = (
+            f"{f.document} tags finish code {f.wrong_raw} in {where} on page "
+            f"{page}, but the finishes schedule defines {f.correct_raw} — the "
+            f"two documents use different tags for the same item"
+            + (
+                f" ({f.counterpart_document} page {f.counterpart_page})"
+                if f.counterpart_document
+                else ""
+            )
+            + "."
         )
     else:  # cross-document-conflict
         s = (

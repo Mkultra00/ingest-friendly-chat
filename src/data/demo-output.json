@@ -2,27 +2,45 @@
   "errors": [
     {
       "document": "1 - Drawings.pdf",
-      "category": "code-violation",
-      "location": "page 7, SHEET KEYNOTES, P201",
-      "description": "P201 in SHEET KEYNOTES on page 7 is given a diameter of 2\" (2 in), but 1 - Drawings.pdf page 7 requires 3\" (3 in). (1 - Drawings.pdf p7 requires 3\" for sanitary waste pipe)"
+      "category": "cross-document-conflict",
+      "location": "page 1, Table_1, CONC-1",
+      "description": "1 - Drawings.pdf tags finish code CONC-1 in Table_1 on page 1, but the finishes schedule defines CON-1 \u2014 the two documents use different tags for the same item (InteriorsSchedule.pdf page 2). (1 - Drawings.pdf tags CONC-1 in Table_1 on page 1 (at E-197, N107B, N107C), while InteriorsSchedule.pdf page 2 defines CON-1)"
     },
     {
       "document": "1 - Drawings.pdf",
-      "category": "code-violation",
-      "location": "page 7, SHEET KEYNOTES, P204",
-      "description": "P204 in SHEET KEYNOTES on page 7 is given a diameter of 4\" (4 in), but 1 - Drawings.pdf page 7 requires 3\" (3 in). (1 - Drawings.pdf p7 requires 3\" for sanitary waste pipe)"
+      "category": "cross-document-conflict",
+      "location": "page 1, Table_1, CONC-2",
+      "description": "1 - Drawings.pdf tags finish code CONC-2 in Table_1 on page 1, but the finishes schedule defines CON-2 \u2014 the two documents use different tags for the same item (InteriorsSchedule.pdf page 2). (1 - Drawings.pdf tags CONC-2 in Table_1 on page 1 (at N103, N139), while InteriorsSchedule.pdf page 2 defines CON-2)"
     },
     {
       "document": "1 - Drawings.pdf",
-      "category": "code-violation",
-      "location": "page 7, SHEET KEYNOTES, P205",
-      "description": "P205 in SHEET KEYNOTES on page 7 is given a diameter of 4\" (4 in), but 1 - Drawings.pdf page 7 requires 3\" (3 in). (1 - Drawings.pdf p7 requires 3\" for sanitary waste pipe)"
+      "category": "cross-document-conflict",
+      "location": "page 1, Table_1, FTL-1",
+      "description": "1 - Drawings.pdf tags finish code FTL-1 in Table_1 on page 1, but the finishes schedule defines FLT-1 \u2014 the two documents use different tags for the same item (InteriorsSchedule.pdf page 2). (1 - Drawings.pdf tags FTL-1 in Table_1 on page 1 (at N142), while InteriorsSchedule.pdf page 2 defines FLT-1)"
     },
     {
-      "document": "MEPSchedule.pdf",
-      "category": "code-violation",
-      "location": "page 2, Table_1, WC-1",
-      "description": "WC-1 in Table_1 on page 2 is given a flow rate of 4.8 6.0 Lpf (4.8 gpm), but IPC 604.4 requires 1.6 gpf. (IPC 604.4 requires 1.6 gallons per flush maximum at water closets)"
+      "document": "1 - Drawings.pdf",
+      "category": "cross-document-conflict",
+      "location": "page 1, CPT-04",
+      "description": "1 - Drawings.pdf tags finish code CPT-04 in the schedule on page 1, but the finishes schedule defines CPT-4 \u2014 the two documents use different tags for the same item (InteriorsSchedule.pdf page 2). (1 - Drawings.pdf page 1 defines CPT-04, while InteriorsSchedule.pdf page 2 defines CPT-4)"
+    },
+    {
+      "document": "1 - Drawings.pdf",
+      "category": "cross-document-conflict",
+      "location": "page 1, CPT-05",
+      "description": "1 - Drawings.pdf tags finish code CPT-05 in the schedule on page 1, but the finishes schedule defines CPT-5 \u2014 the two documents use different tags for the same item (InteriorsSchedule.pdf page 2). (1 - Drawings.pdf page 1 defines CPT-05, while InteriorsSchedule.pdf page 2 defines CPT-5)"
+    },
+    {
+      "document": "1 - Drawings.pdf",
+      "category": "cross-document-conflict",
+      "location": "page 1, CPT-06",
+      "description": "1 - Drawings.pdf tags finish code CPT-06 in the schedule on page 1, but the finishes schedule defines CPT-6 \u2014 the two documents use different tags for the same item (InteriorsSchedule.pdf page 2). (1 - Drawings.pdf page 1 defines CPT-06, while InteriorsSchedule.pdf page 2 defines CPT-6)"
+    },
+    {
+      "document": "1 - Drawings.pdf",
+      "category": "cross-document-conflict",
+      "location": "page 1, CPT-07",
+      "description": "1 - Drawings.pdf tags finish code CPT-07 in the schedule on page 1, but the finishes schedule defines CPT-7 \u2014 the two documents use different tags for the same item (InteriorsSchedule.pdf page 2). (1 - Drawings.pdf page 1 defines CPT-07, while InteriorsSchedule.pdf page 2 defines CPT-7)"
     }
   ]
 }

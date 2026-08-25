@@ -17,6 +17,7 @@ from typing import Any
 CANONICAL_UNIT: dict[str, str] = {
     "fire_rating": "min",
     "flow": "gpm",
+    "flush_volume": "gpf",
     "capacity": "gal",
     "slope": "in/ft",
     "voltage": "V",
@@ -51,6 +52,11 @@ UNIT_TABLE: dict[str, tuple[str, float]] = {
     "gallonsperminute": ("gpm", 1),
     "gph": ("gpm", 1 / 60),
     "lpm": ("gpm", 0.264172),
+    # flush volume (per-flush, NOT per-minute: never compare to gpm)
+    "gpf": ("gpf", 1),
+    "gallonsperflush": ("gpf", 1),
+    "lpf": ("gpf", 0.264172),
+    "lperflush": ("gpf", 0.264172),
     # volume
     "gal": ("gal", 1),
     "gallon": ("gal", 1),
@@ -104,6 +110,11 @@ ATTRIBUTE_ALIASES: dict[str, str] = {
     "fire_resistance_rating": "fire_rating",
     "flow_rate": "flow",
     "flowrate": "flow",
+    "flush": "flush_volume",
+    "flush_rate": "flush_volume",
+    "flush_volume": "flush_volume",
+    "gpf": "flush_volume",
+    "lpf": "flush_volume",
     "gpm": "flow",
     "tank_capacity": "capacity",
     "volume": "capacity",
@@ -139,7 +150,8 @@ def parse_value(value_raw: str | None) -> tuple[float | None, str | None]:
     """Pull a number and a unit token out of a raw document string."""
     if not value_raw:
         return None, None
-    s = str(value_raw).strip()
+    s = _strip_metric_dual(str(value_raw).strip())
+    s = _worst_of_dual(s)
 
     # fractional inches: 3/4", 1-1/2"
     frac = re.match(rf"^({_NUM})?\s*-?\s*(\d+)\s*/\s*(\d+)\s*(.*)$", s)
@@ -156,6 +168,42 @@ def parse_value(value_raw: str | None) -> tuple[float | None, str | None]:
     except ValueError:
         return None, None
     return num, (m.group(2) or "").strip() or None
+
+
+_IMPERIAL = re.compile(r"\b(gpf|gpm|gal|in|ft|psi|cfm)\b|[\"\']")
+_METRIC_PAREN = re.compile(r"\(([^)]*?\b(?:lpf|lpm|mm|cm|l)\b[^)]*)\)", re.I)
+
+
+def _strip_metric_dual(s: str) -> str:
+    """'1.28 1.6 gpf (4.8 6.0 Lpf)' -> '1.28 1.6 gpf'.
+
+    Schedules quote a metric equivalent in parentheses. Keeping it invites the
+    worst class of false positive: comparing 4.8 litres-per-flush against a
+    1.6 gallons-per-flush limit.
+    """
+    outside = _METRIC_PAREN.sub(" ", s)
+    if _IMPERIAL.search(outside):
+        return outside
+    return s
+
+
+_DUAL = re.compile(rf"({_NUM})(?:\s+({_NUM}))+\s*([A-Za-z/%\"\']+)")
+
+
+def _worst_of_dual(s: str) -> str:
+    """'1.28 1.6 gpf' lists two models; keep the larger so a limit check is
+    conservative rather than accidental."""
+    m = _DUAL.search(s)
+    if not m:
+        return s
+    nums = re.findall(_NUM, m.group(0))
+    try:
+        vals = [float(n) for n in nums]
+    except ValueError:
+        return s
+    if not vals:
+        return s
+    return s[: m.start()] + f"{fmt_num(max(vals))} {m.group(3)}" + s[m.end() :]
 
 
 def fold_unit(unit: str | None) -> str:
@@ -218,6 +266,11 @@ class Fact:
 
     def normalize(self) -> "Fact":
         self.attribute = canon_attribute(self.attribute)
+        if self.attribute == "flow" and fold_unit(
+            self.unit_raw or parse_value(self.value_raw)[1]
+        ) in ("gpf", "lpf"):
+            # A per-flush volume mislabeled as a flow rate.
+            self.attribute = "flush_volume"
         self.mark_key = canon_mark(self.mark)
         if self.value_num is None:
             num, unit = parse_value(self.value_raw)

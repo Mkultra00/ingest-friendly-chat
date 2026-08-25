@@ -86,6 +86,7 @@ def mark_contexts(facts: list[Fact]) -> dict[str, str]:
 
 from resolvers.code import find_code_violations  # noqa: E402
 from resolvers.conflict import find_conflicts  # noqa: E402
+from resolvers.finishes import find_finish_conflicts  # noqa: E402
 from resolvers.missing import find_missing  # noqa: E402
 from resolvers.units import find_unit_errors  # noqa: E402
 
@@ -97,6 +98,7 @@ __all__ = [
     "find_unit_errors",
     "find_code_violations",
     "find_missing",
+    "find_finish_conflicts",
 ]
 
 
@@ -106,4 +108,5 @@ def resolve_all(facts: list[Fact]) -> list[Finding]:
     findings += find_code_violations(facts)
     findings += find_unit_errors(facts)
     findings += find_missing(facts)
+    findings += find_finish_conflicts(facts)
     return findings
