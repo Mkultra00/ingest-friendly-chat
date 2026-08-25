@@ -244,14 +244,11 @@ function Index() {
                 sheet-location callout with the as-drawn snippet, and the product panel with a
                 compliant match. Fully interactive — flag, raise RFIs, or clear rows.
               </p>
-              <a
-                href="https://claude.ai/code/artifact/2f177f1b-3d87-4d4d-af7b-f0f48bbcef13"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
-              >
-                Open the original prototype
-              </a>
+              <p className="text-xs text-muted-foreground">
+                Rebuilt natively here — the original Claude artifact link is private and only
+                opens in its creator's session.
+              </p>
+
               <div className="overflow-x-auto rounded-2xl border border-border/60">
                 <ConflictReview />
               </div>
