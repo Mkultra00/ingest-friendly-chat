@@ -271,8 +271,14 @@ def _near_miss(
                 continue
             if sorted(letters) == sorted(oletters) and letters != oletters:
                 return (doc, other, page)  # transposed prefix: FTL-1 vs FLT-1
-            if letters != oletters and (
-                letters.startswith(oletters) or oletters.startswith(letters)
+            short, long = sorted((letters, oletters), key=len)
+            if (
+                letters != oletters
+                and len(short) >= 3
+                and len(long) - len(short) <= 1
+                and long.startswith(short)
             ):
-                return (doc, other, page)  # truncated prefix: CONC-1 vs CON-1
+                # CONC-1 vs CON-1. A one-letter prefix (U-1 vs UPH-1) is a
+                # different product family, not a typo.
+                return (doc, other, page)
     return None
