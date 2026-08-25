@@ -79,8 +79,10 @@ def find_missing(facts: list[Fact]) -> list[Finding]:
         # There must actually be a schedule of that kind in the set, otherwise
         # "absent from the schedule" is a statement about a missing document.
         if not any(
-            f.kind in kinds and f.source in SCHEDULE_SOURCES for f in facts
+            (x.kind or "").lower() in real_kinds and x.source in SCHEDULE_SOURCES
+            for x in facts
         ):
+
             continue
 
         findings.append(
