@@ -216,7 +216,7 @@ function Index() {
           </div>
         </section>
 
-        <div className="mt-20" id="findings">
+        <div className="mt-20">
           <FindingsRegister
             findings={scopedFindings}
             documents={selected}
