@@ -85,7 +85,7 @@ function Index() {
               alt="Godzilla in a construction hard hat reviewing a set of blueprints"
               width={1024}
               height={1024}
-              className="h-24 w-24 shrink-0 rounded-full border border-border bg-muted object-cover sm:h-28 sm:w-28"
+              className="h-36 w-36 shrink-0 rounded-full border border-border bg-muted object-cover sm:h-48 sm:w-48"
             />
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
