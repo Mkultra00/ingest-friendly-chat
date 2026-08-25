@@ -70,8 +70,10 @@ def find_missing(facts: list[Fact]) -> list[Finding]:
             continue  # single reference: too likely an extraction artifact
         rep = group[0]
         kinds = {f.kind for f in group if f.kind}
-        if not kinds & SCHEDULEABLE_KINDS:
+        real_kinds = {(k or "").lower() for k in kinds} - NON_SCHEDULEABLE_KINDS
+        if not real_kinds:
             continue  # rooms, sheets, grids and keynotes are not schedule rows
+
         if SHEET_LIKE.match((rep.mark or mark_key).upper().replace(" ", "")):
             continue
         # There must actually be a schedule of that kind in the set, otherwise
