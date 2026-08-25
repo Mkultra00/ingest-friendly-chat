@@ -19,7 +19,7 @@ from typing import Callable
 PLAUSIBLE: dict[str, tuple[float, float]] = {
     "fire_rating": (20, 240),          # min
     "flow": (0.2, 8.0),                # gpm, plumbing fixtures
-    "flush_volume": (0.5, 3.5),        # gpf, water closets and urinals
+    "flush_volume": (0.1, 3.5),        # gpf; 0.125 gpf pint urinals are real
     "capacity": (2, 500),              # gal, water heaters / tanks
     "slope": (0.0625, 0.5),            # in/ft, sanitary/storm drainage
     "voltage": (12, 600),              # V, building distribution

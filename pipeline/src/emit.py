@@ -96,6 +96,18 @@ def description_of(f: Finding) -> str:
             f"but {f.citation or 'the governing requirement'} requires "
             f"{right}."
         )
+    elif f.attribute == "finish_code":
+        s = (
+            f"{f.document} tags finish code {f.wrong_raw} in {where} on page "
+            f"{page}, but the finishes schedule defines {f.correct_raw} — the "
+            f"two documents use different tags for the same item"
+            + (
+                f" ({f.counterpart_document} page {f.counterpart_page})"
+                if f.counterpart_document
+                else ""
+            )
+            + "."
+        )
     else:  # cross-document-conflict
         s = (
             f"{mark} in {where} on page {page} lists a {word} of {wrong}, "

@@ -118,7 +118,58 @@ def find_finish_conflicts(facts: list[Fact]) -> list[Finding]:
                 ),
             )
         )
+    findings += _legend_variants(defined)
     return findings
+
+
+def _legend_variants(defined: dict[str, dict[str, int]]) -> list[Finding]:
+    """A drawing legend that defines CPT-07 while the finishes schedule defines
+    CPT-7 is the same disagreement, even when no room tag survived extraction.
+
+    The document with fewer definitions is the drawing legend, so it is the one
+    blamed — the schedule is the authority on finish tags.
+    """
+    out: list[Finding] = []
+    for doc, codes in sorted(defined.items()):
+        others = {
+            d: c
+            for d, c in defined.items()
+            if norm_doc(d) != norm_doc(doc) and len(c) > len(codes)
+        }
+        if not others:
+            continue
+        for code, page in sorted(codes.items()):
+            if any(code in c for c in others.values()):
+                continue
+            variant = _near_miss(code, others)
+            if variant is None:
+                continue
+            other_doc, other_code, other_page = variant
+            out.append(
+                Finding(
+                    document=doc,
+                    category="cross-document-conflict",
+                    mark=code,
+                    attribute="finish_code",
+                    page=page,
+                    container=None,
+                    wrong_raw=code,
+                    wrong_canon="",
+                    correct_raw=other_code,
+                    correct_canon="",
+                    citation=None,
+                    confidence=0.68,
+                    rule_id="finish-tag-variant",
+                    evidence=[],
+                    counterpart_document=other_doc,
+                    counterpart_page=other_page,
+                    note=(
+                        f"{doc} page {page} defines {code}, while {other_doc} "
+                        f"page {other_page} defines {other_code}"
+                    ),
+                )
+            )
+    return out
 
 
 # ---------------------------------------------------------------------------
