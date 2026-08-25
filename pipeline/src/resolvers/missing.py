@@ -12,6 +12,7 @@ and blanks only count for attributes in REQUIRED_ATTRIBUTES_BY_KIND.
 
 from __future__ import annotations
 
+import re
 from collections import defaultdict
 
 from facts import Fact
@@ -21,6 +22,26 @@ from rules import REQUIRED_ATTRIBUTES_BY_KIND
 
 SCHEDULE_SOURCES = {"schedule", "table"}
 REFERENCE_SOURCES = {"callout", "keynote", "note", "body"}
+
+#: Only items that belong in a schedule can be "missing from the schedule".
+#: Sheet numbers, room numbers, grid lines and detail bubbles are referenced
+#: constantly and are never scheduled, so they are not defects.
+SCHEDULEABLE_KINDS = {
+    "door",
+    "window",
+    "fixture",
+    "plumbing_fixture",
+    "equipment",
+    "finish",
+    "panel",
+    "luminaire",
+    "louver",
+    "diffuser",
+    "valve",
+}
+
+#: Sheet identifiers (A101, S102A, P207) — reference tokens, not schedule marks.
+SHEET_LIKE = re.compile(r"^[A-Z]{1,2}\d{3}[A-Z]?$")
 
 
 def find_missing(facts: list[Fact]) -> list[Finding]:
@@ -45,6 +66,17 @@ def find_missing(facts: list[Fact]) -> list[Finding]:
             continue  # single reference: too likely an extraction artifact
         rep = group[0]
         kinds = {f.kind for f in group if f.kind}
+        if not kinds & SCHEDULEABLE_KINDS:
+            continue  # rooms, sheets, grids and keynotes are not schedule rows
+        if SHEET_LIKE.match((rep.mark or mark_key).upper().replace(" ", "")):
+            continue
+        # There must actually be a schedule of that kind in the set, otherwise
+        # "absent from the schedule" is a statement about a missing document.
+        if not any(
+            f.kind in kinds and f.source in SCHEDULE_SOURCES for f in facts
+        ):
+            continue
+
         findings.append(
             Finding(
                 document=rep.document,
