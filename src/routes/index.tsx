@@ -13,6 +13,7 @@ import {
 } from "@/lib/findings";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import ConflictReview from "@/components/visual/ConflictReview";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 
