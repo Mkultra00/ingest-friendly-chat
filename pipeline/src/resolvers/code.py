@@ -146,8 +146,6 @@ def scope_matches(req: Fact, f: Fact, contexts: dict[str, str]) -> bool:
         return True
     if req.attribute in IDENTITY_ATTRS:
         return False  # only ever mark-to-mark
-    if req.attribute in DIMENSION_ATTRS and not req.citation:
-        return False  # per-item dimensions need a mark or a clause
     if req.kind and f.kind and req.kind != f.kind:
         return False
     scope = f"{req.applies_to or ''} {req.verbatim or ''}".strip()
@@ -158,9 +156,14 @@ def scope_matches(req: Fact, f: Fact, contexts: dict[str, str]) -> bool:
     # reaches door D-202 through its sibling "Mechanical 101" location cell.
     hay = (context_text(f) + " " + contexts.get(f.mark_key, "")).lower()
     hits = [w for w in words if w in hay]
+    if req.attribute in DIMENSION_ATTRS and not req.citation:
+        # Per-item dimensions are the noisiest match: demand a specific term
+        # AND a second corroborating one.
+        return len(hits) >= 2 and any(len(w) >= 6 for w in hits)
     # One short incidental word is a coincidence; require either a strong
     # single term or two independent ones.
     return any(len(w) >= 6 for w in hits) or len(hits) >= 2
+
 
 
 
