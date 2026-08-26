@@ -92,9 +92,9 @@ function Index() {
               className="h-36 w-36 shrink-0 rounded-full border border-border bg-muted object-cover sm:h-48 sm:w-48"
             />
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                SoecTech
-              </p>
+<h1 className="font-extrabold tracking-tight text-foreground">
+                SpecTech
+              </h1>
               <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
                 Construction document review that shows its work — and reads it to you.
               </h1>
