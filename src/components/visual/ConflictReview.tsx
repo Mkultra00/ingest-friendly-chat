@@ -647,10 +647,10 @@ export default function ConflictReview({
               </span>
             </div>
 
-            <div
+<div
               style={{
                 position: "relative",
-                height: 330,
+                height: 400,
                 margin: "0 22px",
                 background: "#F1EFEA",
                 borderRadius: 12,
@@ -697,19 +697,19 @@ export default function ConflictReview({
                 </div>
               </div>
 
-              <div
-                style={{
-                  position: "absolute",
-                  right: 20,
-                  bottom: 20,
-                  width: 392,
-                  background: "#FFFFFF",
-                  border: "1px solid rgba(0,0,0,0.08)",
-                  borderRadius: 13,
-                  boxShadow: "0 12px 34px rgba(23,24,27,0.14)",
-                  overflow: "hidden",
-                }}
-              >
+<div
+                  style={{
+position: "absolute",
+                    right: 20,
+                    bottom: 16,
+                    width: 392,
+                    background: "#FFFFFF",
+                    border: "1px solid rgba(0,0,0,0.08)",
+                    borderRadius: 13,
+                    boxShadow: "0 12px 34px rgba(23,24,27,0.14)",
+                    overflow: "hidden",
+                  }}
+                >
                 <div style={{ padding: "13px 16px 11px" }}>
                   <div style={{ fontSize: 12, color: "#8A8F98", marginBottom: 7 }}>
                     As drawn · {focus.ref}
