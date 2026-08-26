@@ -362,15 +362,15 @@ export default function ConflictReview({
         </div>
       )}
 
-      <div
+<div
         style={{
           flex: 1,
-          display: "grid",
-          gridTemplateColumns: "minmax(700px,1fr) 348px",
-          alignItems: "start",
+          display: "flex",
+          flexDirection: "column",
           gap: 22,
           padding: "8px 28px 48px",
           minHeight: 0,
+          minWidth: 0,
         }}
       >
         <main style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 20 }}>
