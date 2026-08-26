@@ -151,9 +151,9 @@ export default function ConflictReview({
   const specV = sel.spec.verdict === "Verified";
 
   return (
-    <div
+<div
       style={{
-        minWidth: 1180,
+        width: "100%",
         fontFamily: "'Space Grotesk', system-ui, sans-serif",
         color: "#17181B",
         background: "#F6F5F2",
@@ -362,15 +362,15 @@ export default function ConflictReview({
         </div>
       )}
 
-      <div
+<div
         style={{
           flex: 1,
-          display: "grid",
-          gridTemplateColumns: "minmax(700px,1fr) 348px",
-          alignItems: "start",
+          display: "flex",
+          flexDirection: "column",
           gap: 22,
           padding: "8px 28px 48px",
           minHeight: 0,
+          minWidth: 0,
         }}
       >
         <main style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 20 }}>
@@ -870,14 +870,12 @@ export default function ConflictReview({
         </main>
 
         {/* ============ SIDE PANEL ============ */}
-        <aside
+<aside
           style={{
             display: "flex",
             flexDirection: "column",
             gap: 14,
             minWidth: 0,
-            position: "sticky",
-            top: 8,
           }}
         >
           <div
