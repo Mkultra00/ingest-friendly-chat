@@ -647,10 +647,10 @@ export default function ConflictReview({
               </span>
             </div>
 
-            <div
+<div
               style={{
                 position: "relative",
-                height: 330,
+                height: 400,
                 margin: "0 22px",
                 background: "#F1EFEA",
                 borderRadius: 12,
