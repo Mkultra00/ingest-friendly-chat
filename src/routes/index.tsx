@@ -19,9 +19,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 
 
-const title = "SoecTech — construction document review with a voice readout";
+const title = "SpecTech — construction document review with a voice readout";
 const description =
-  "SoecTech cross-checks construction drawings, schedules, and specs, then reads every citable finding aloud. Deterministic resolvers, quoted evidence, no guessing.";
+  "SpecTech cross-checks construction drawings, schedules, and specs, then reads every citable finding aloud. Deterministic resolvers, quoted evidence, no guessing.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -92,9 +92,9 @@ function Index() {
               className="h-36 w-36 shrink-0 rounded-full border border-border bg-muted object-cover sm:h-48 sm:w-48"
             />
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                SoecTech
-              </p>
+<h1 className="font-extrabold tracking-tight text-foreground">
+                SpecTech
+              </h1>
               <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
                 Construction document review that shows its work — and reads it to you.
               </h1>
