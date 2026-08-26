@@ -3,7 +3,6 @@ import {
   CHECK,
   ITEMS,
   SEV,
-  STATUS_NOTE,
   TIER,
   TONE,
   type Item,
@@ -555,7 +554,6 @@ export default function ConflictReview({
                         <span style={{ fontWeight: 600, color: checkFg }}>{checkLabel}</span> —{" "}
                         {sv?.blurb}
                       </div>
-                      {null}
 
                       <div style={{ display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
                         {isEscalatable(r) && (
