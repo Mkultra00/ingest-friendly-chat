@@ -874,7 +874,7 @@ export default function ConflictReview({
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: 14,
+            gap: 20,
             minWidth: 0,
           }}
         >
