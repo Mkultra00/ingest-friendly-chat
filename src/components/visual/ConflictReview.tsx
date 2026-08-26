@@ -699,9 +699,9 @@ export default function ConflictReview({
 
 <div
                   style={{
-                    position: "absolute",
+position: "absolute",
                     right: 20,
-                    bottom: 6,
+                    bottom: 16,
                     width: 392,
                     background: "#FFFFFF",
                     border: "1px solid rgba(0,0,0,0.08)",
