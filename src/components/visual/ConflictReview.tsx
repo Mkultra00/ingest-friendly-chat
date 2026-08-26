@@ -151,9 +151,9 @@ export default function ConflictReview({
   const specV = sel.spec.verdict === "Verified";
 
   return (
-    <div
+<div
       style={{
-        minWidth: 1180,
+        width: "100%",
         fontFamily: "'Space Grotesk', system-ui, sans-serif",
         color: "#17181B",
         background: "#F6F5F2",
