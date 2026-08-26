@@ -870,14 +870,12 @@ export default function ConflictReview({
         </main>
 
         {/* ============ SIDE PANEL ============ */}
-        <aside
+<aside
           style={{
             display: "flex",
             flexDirection: "column",
             gap: 14,
             minWidth: 0,
-            position: "sticky",
-            top: 8,
           }}
         >
           <div
