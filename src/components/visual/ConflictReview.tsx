@@ -555,18 +555,8 @@ export default function ConflictReview({
                         <span style={{ fontWeight: 600, color: checkFg }}>{checkLabel}</span> —{" "}
                         {sv?.blurb}
                       </div>
-                      {r.note && (
-                        <div
-                          style={{
-                            fontSize: 13.5,
-                            lineHeight: 1.55,
-                            color: "#3C414A",
-                            maxWidth: "72ch",
-                          }}
-                        >
-                          {r.note}
-                        </div>
-                      )}
+                      {null}
+
                       <div style={{ display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
                         {isEscalatable(r) && (
                           <>
