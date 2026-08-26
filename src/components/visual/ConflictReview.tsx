@@ -610,7 +610,6 @@ export default function ConflictReview({
                         >
                           {isEscalatable(r) ? "Not a conflict" : "Acknowledge"}
                         </button>
-                        <span style={{ fontSize: 12.5, color: "#9AA0A8" }}>{STATUS_NOTE[st]}</span>
                       </div>
                     </div>
                   )}
@@ -823,7 +822,6 @@ export default function ConflictReview({
           >
             <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 14 }}>
               <div style={{ fontSize: 16, fontWeight: 600 }}>Source of truth</div>
-              <div style={{ fontSize: 13, color: "#8A8F98" }}>{sel.rule}</div>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
               {sel.authority.map((a) => {
