@@ -19,9 +19,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 
 
-const title = "SoecTech — construction document review with a voice readout";
+const title = "SpecTech — construction document review with a voice readout";
 const description =
-  "SoecTech cross-checks construction drawings, schedules, and specs, then reads every citable finding aloud. Deterministic resolvers, quoted evidence, no guessing.";
+  "SpecTech cross-checks construction drawings, schedules, and specs, then reads every citable finding aloud. Deterministic resolvers, quoted evidence, no guessing.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
